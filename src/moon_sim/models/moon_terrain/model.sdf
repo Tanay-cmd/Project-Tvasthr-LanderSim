@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<sdf version="1.10">
+  <model name="moon_terrain">
+    <static>true</static>
+    <link name="terrain_link">
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://moon_terrain/meshes/moon_terrain.glb</uri>
+            <scale>1 1 1</scale> <!-- adjust if needed -->
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://moon_terrain/meshes/moon_terrain.glb</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>
