@@ -9,7 +9,7 @@ def generate_launch_description():
     world_path = PathJoinSubstitution([
         FindPackageShare('moon_sim'),
         'worlds',
-        'moon_world.sdf'  # or moon_flat_world.sdf
+        'moon_flat_world.sdf'  # or moon_flat_world.sdf
     ])
 
     return LaunchDescription([

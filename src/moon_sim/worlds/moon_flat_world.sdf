@@ -21,7 +21,8 @@
             name="gz::sim::systems::SceneBroadcaster">
         </plugin>
         <plugin name="gz::sim::systems::Sensors" filename="gz-sim-sensors-system"/>
-        
+  <!-- plugin-specific params go here if needed -->
+
         
         <gravity>0 0 -1.62</gravity>
 
@@ -41,7 +42,7 @@
 
         <include>
           <uri>model://lander</uri>
-          <pose>0 0 90 0 0.5 0.5</pose> <!-- Drop from 50m for IMU motion -->
+          <pose>0 0 90 0 0 0</pose> <!-- Drop from 50m for IMU motion -->
         </include>
         
         <model name="ground_plane">
@@ -53,7 +54,20 @@
                     <normal>0 0 1</normal>
                     </plane>
                 </geometry>
+                <surface>
+                    <bounce>
+                    <restitution_coefficient>0.5</restitution_coefficient>
+                    <threshold>1.0</threshold>
+                    </bounce>
+                    <friction>
+                    <ode>
+                        <mu>0.5</mu>
+                        <mu2>0.5</mu2>
+                    </ode>
+                    </friction>
+                </surface>
                 </collision>
+
                 <visual name="visual">
                 <geometry>
                     <plane>
