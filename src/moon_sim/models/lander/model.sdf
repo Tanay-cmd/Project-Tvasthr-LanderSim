@@ -96,11 +96,11 @@
       </visual>
 
       <!-- Contact Sensors and Visuals -->
-<!-- Positions: (+0.3, 0), (-0.3, 0), (0, +0.3), (0, -0.3) -->
+<!-- Positions: (+2.78, 0), (-2.78, 0), (0, +2.78), (0, -2.78) -->
 
 <!-- Contact Sensor: +X -->
     <sensor name="contact_sensor_posx" type="contact">
-      <pose>0.3 0 0 0 0 0</pose>
+      <pose>2.78 0 0 0 0 0</pose>
       <always_on>true</always_on>
       <update_rate>100</update_rate>
       <contact>
@@ -109,7 +109,7 @@
       <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
     </sensor>
     <visual name="contact_marker_posx">
-      <pose>0.3 0 0 0 0 0</pose>
+      <pose>2.78 0 0 0 0 0</pose>
       <geometry>
         <sphere><radius>0.1</radius></sphere>
       </geometry>
@@ -118,7 +118,7 @@
 
     <!-- Contact Sensor: -X -->
     <sensor name="contact_sensor_negx" type="contact">
-      <pose>-0.3 0 0 0 0 0</pose>
+      <pose>-2.78 0 0 0 0 0</pose>
       <always_on>true</always_on>
       <update_rate>100</update_rate>
       <contact>
@@ -127,7 +127,7 @@
       <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
     </sensor>
     <visual name="contact_marker_negx">
-      <pose>-0.3 0 0 0 0 0</pose>
+      <pose>-2.78 0 0 0 0 0</pose>
       <geometry>
         <sphere><radius>0.1</radius></sphere>
       </geometry>
@@ -136,7 +136,7 @@
 
     <!-- Contact Sensor: +Y -->
     <sensor name="contact_sensor_posy" type="contact">
-      <pose>0 0.3 0 0 0 0</pose>
+      <pose>0 2.78 0 0 0 0</pose>
       <always_on>true</always_on>
       <update_rate>100</update_rate>
       <contact>
@@ -145,7 +145,7 @@
       <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
     </sensor>
     <visual name="contact_marker_posy">
-      <pose>0 0.3 0 0 0 0</pose>
+      <pose>0 2.78 0 0 0 0</pose>
       <geometry>
         <sphere><radius>0.1</radius></sphere>
       </geometry>
@@ -154,7 +154,7 @@
 
     <!-- Contact Sensor: -Y -->
     <sensor name="contact_sensor_negy" type="contact">
-      <pose>0 -0.3 0 0 0 0</pose>
+      <pose>0 -2.78 0 0 0 0</pose>
       <always_on>true</always_on>
       <update_rate>100</update_rate>
       <contact>
@@ -163,7 +163,7 @@
       <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
     </sensor>
     <visual name="contact_marker_negy">
-      <pose>0 -0.3 0 0 0 0</pose>
+      <pose>0 -2.78 0 0 0 0</pose>
       <geometry>
         <sphere><radius>0.1</radius></sphere>
       </geometry>
@@ -175,7 +175,7 @@
       <visual name="lander_visual">
         <geometry>
           <mesh>
-            <uri>model://lander/meshes/lander.glb</uri>
+            <uri>model://lander/meshes/Collision.obj</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -186,7 +186,7 @@
         <geometry>
           <mesh>
             <uri>model://lander/meshes/lander.glb</uri>
-            <scale>2 2 2</scale>
+            <scale>1 1 1</scale>
           </mesh>
         </geometry>
         <surface>
