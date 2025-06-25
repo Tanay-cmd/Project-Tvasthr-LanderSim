@@ -2,11 +2,16 @@
 <sdf version="1.10">
   <world name="moon_world">
 
-  <physics name="default_physics" type="bullet">
-    <max_step_size>0.001</max_step_size>
-    <real_time_factor>1</real_time_factor>
-    <real_time_update_rate>1000</real_time_update_rate>
-  </physics>
+<physics name="default_physics" type="ode">
+  <max_step_size>0.001</max_step_size>
+  <real_time_update_rate>1000</real_time_update_rate>
+  <ode>
+    <solver>
+      <iters>100</iters>
+    </solver>
+  </ode>
+</physics>
+zz
 
     <!-- Lunar gravity -->
     <gravity>0 0 -1.62</gravity>

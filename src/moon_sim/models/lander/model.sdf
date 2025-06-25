@@ -4,7 +4,7 @@
     <static>false</static> <!-- Lander can fall under gravity -->
 
     <link name="lander_link">
-      <pose>0 0 0.5 0 0 0</pose> <!-- Slightly above ground -->
+      <pose>0 0 0 0 0 0</pose> <!-- Slightly above ground -->
 
       <!-- Inertial properties for physics -->
       <inertial>
@@ -96,11 +96,11 @@
       </visual>
 
       <!-- Contact Sensors and Visuals -->
-<!-- Positions: (+0.3, 0), (-0.3, 0), (0, +0.3), (0, -0.3) -->
+<!-- Positions: (+2.78, 0), (-2.78, 0), (0, +2.78), (0, -2.78) -->
 
 <!-- Contact Sensor: +X -->
     <sensor name="contact_sensor_posx" type="contact">
-      <pose>0.3 0 0 0 0 0</pose>
+      <pose>2.78 0 0 0 0 0</pose>
       <always_on>true</always_on>
       <update_rate>100</update_rate>
       <contact>
@@ -109,7 +109,7 @@
       <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
     </sensor>
     <visual name="contact_marker_posx">
-      <pose>0.3 0 0 0 0 0</pose>
+      <pose>2.78 0 0 0 0 0</pose>
       <geometry>
         <sphere><radius>0.1</radius></sphere>
       </geometry>
@@ -118,7 +118,7 @@
 
     <!-- Contact Sensor: -X -->
     <sensor name="contact_sensor_negx" type="contact">
-      <pose>-0.3 0 0 0 0 0</pose>
+      <pose>-2.78 0 0 0 0 0</pose>
       <always_on>true</always_on>
       <update_rate>100</update_rate>
       <contact>
@@ -127,7 +127,7 @@
       <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
     </sensor>
     <visual name="contact_marker_negx">
-      <pose>-0.3 0 0 0 0 0</pose>
+      <pose>-2.78 0 0 0 0 0</pose>
       <geometry>
         <sphere><radius>0.1</radius></sphere>
       </geometry>
@@ -136,7 +136,7 @@
 
     <!-- Contact Sensor: +Y -->
     <sensor name="contact_sensor_posy" type="contact">
-      <pose>0 0.3 0 0 0 0</pose>
+      <pose>0 2.78 0 0 0 0</pose>
       <always_on>true</always_on>
       <update_rate>100</update_rate>
       <contact>
@@ -145,7 +145,7 @@
       <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
     </sensor>
     <visual name="contact_marker_posy">
-      <pose>0 0.3 0 0 0 0</pose>
+      <pose>0 2.78 0 0 0 0</pose>
       <geometry>
         <sphere><radius>0.1</radius></sphere>
       </geometry>
@@ -154,7 +154,7 @@
 
     <!-- Contact Sensor: -Y -->
     <sensor name="contact_sensor_negy" type="contact">
-      <pose>0 -0.3 0 0 0 0</pose>
+      <pose>0 -2.78 0 0 0 0</pose>
       <always_on>true</always_on>
       <update_rate>100</update_rate>
       <contact>
@@ -163,12 +163,19 @@
       <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
     </sensor>
     <visual name="contact_marker_negy">
-      <pose>0 -0.3 0 0 0 0</pose>
+      <pose>0 -2.78 0 0 0 0</pose>
       <geometry>
         <sphere><radius>0.1</radius></sphere>
       </geometry>
       <material><ambient>1 1 0 1</ambient><diffuse>1 1 0 1</diffuse></material>
     </visual>
+
+    <sensor name="altimeter_sensor" type="altimeter">
+      <always_on>true</always_on>
+      <update_rate>50.0</update_rate>
+      <topic>altimeter</topic>
+      <plugin name="gz::sim::systems::Altimeter" filename="gz-sim-altimeter-system"/>
+    </sensor>
 
 
       <!-- Visual mesh -->
@@ -184,15 +191,11 @@
       <!-- Collision mesh -->
       <collision name="lander_collision">
         <geometry>
-          <mesh>
-            <uri>model://lander/meshes/lander.glb</uri>
-            <scale>2 2 2</scale>
-          </mesh>
+          <box>
+            <size>0.01 0.01 0.01</size>
+          </box>
         </geometry>
         <surface>
-          <contact>
-            <collide_without_contact>true</collide_without_contact>
-          </contact>
           <bounce>
             <restitution_coefficient>0.6</restitution_coefficient>
             <threshold>1.0</threshold>
@@ -205,6 +208,7 @@
           </friction>
         </surface>
       </collision>
+      
 
     </link>
     <joint name="thruster_0_joint" type="fixed">
