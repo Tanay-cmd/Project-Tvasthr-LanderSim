@@ -86,7 +86,7 @@
         <pose>0 0 -2   0 1.57834 0</pose> <!-- Match camera sensor pose -->
         <geometry>
           <box>
-            <size>0.1 0.1 0.1</size>
+            <size>1 1 0.01</size>
           </box>
         </geometry>
         <material>
@@ -95,80 +95,7 @@
         </material>
       </visual>
 
-      <!-- Contact Sensors and Visuals -->
-<!-- Positions: (+2.78, 0), (-2.78, 0), (0, +2.78), (0, -2.78) -->
 
-<!-- Contact Sensor: +X -->
-    <sensor name="contact_sensor_posx" type="contact">
-      <pose>2.78 0 0 0 0 0</pose>
-      <always_on>true</always_on>
-      <update_rate>100</update_rate>
-      <contact>
-        <collision>lander_collision</collision>
-      </contact>
-      <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
-    </sensor>
-    <visual name="contact_marker_posx">
-      <pose>2.78 0 0 0 0 0</pose>
-      <geometry>
-        <sphere><radius>0.1</radius></sphere>
-      </geometry>
-      <material><ambient>0 1 0 1</ambient><diffuse>0 1 0 1</diffuse></material>
-    </visual>
-
-    <!-- Contact Sensor: -X -->
-    <sensor name="contact_sensor_negx" type="contact">
-      <pose>-2.78 0 0 0 0 0</pose>
-      <always_on>true</always_on>
-      <update_rate>100</update_rate>
-      <contact>
-        <collision>lander_collision</collision>
-      </contact>
-      <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
-    </sensor>
-    <visual name="contact_marker_negx">
-      <pose>-2.78 0 0 0 0 0</pose>
-      <geometry>
-        <sphere><radius>0.1</radius></sphere>
-      </geometry>
-      <material><ambient>0 0 1 1</ambient><diffuse>0 0 1 1</diffuse></material>
-    </visual>
-
-    <!-- Contact Sensor: +Y -->
-    <sensor name="contact_sensor_posy" type="contact">
-      <pose>0 2.78 0 0 0 0</pose>
-      <always_on>true</always_on>
-      <update_rate>100</update_rate>
-      <contact>
-        <collision>lander_collision</collision>
-      </contact>
-      <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
-    </sensor>
-    <visual name="contact_marker_posy">
-      <pose>0 2.78 0 0 0 0</pose>
-      <geometry>
-        <sphere><radius>0.1</radius></sphere>
-      </geometry>
-      <material><ambient>1 0 0 1</ambient><diffuse>1 0 0 1</diffuse></material>
-    </visual>
-
-    <!-- Contact Sensor: -Y -->
-    <sensor name="contact_sensor_negy" type="contact">
-      <pose>0 -2.78 0 0 0 0</pose>
-      <always_on>true</always_on>
-      <update_rate>100</update_rate>
-      <contact>
-        <collision>lander_collision</collision>
-      </contact>
-      <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
-    </sensor>
-    <visual name="contact_marker_negy">
-      <pose>0 -2.78 0 0 0 0</pose>
-      <geometry>
-        <sphere><radius>0.1</radius></sphere>
-      </geometry>
-      <material><ambient>1 1 0 1</ambient><diffuse>1 1 0 1</diffuse></material>
-    </visual>
 
     <sensor name="altimeter_sensor" type="altimeter">
       <always_on>true</always_on>
@@ -188,29 +115,166 @@
         </geometry>
       </visual>
 
-      <!-- Collision mesh -->
-      <collision name="lander_collision">
+
+
+
+      <!-- +X leg -->
+      <collision name="leg_posx_collision">
         <geometry>
-          <box>
-            <size>0.01 0.01 0.01</size>
-          </box>
+          <box><size>1 1 0.01</size></box>
         </geometry>
+        <pose>2.78 0 0.1 0 0 0</pose>
         <surface>
-          <bounce>
-            <restitution_coefficient>0.6</restitution_coefficient>
-            <threshold>1.0</threshold>
-          </bounce>
           <friction>
             <ode>
-              <mu>0.5</mu>
-              <mu2>0.5</mu2>
+              <mu>0.1</mu>
+              <mu2>0.1</mu2>
             </ode>
           </friction>
+          <bounce>
+            <restitution_coefficient>0.5</restitution_coefficient>
+            <threshold>1.0</threshold>
+          </bounce>
+          <contact>
+            <ode>
+              <soft_cfm>0.0</soft_cfm>
+              <soft_erp>0.2</soft_erp>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+
+      <visual name="leg_posx_visual">
+        <geometry>
+          <box><size>1 1 0.01</size></box>
+        </geometry>
+        <pose>2.78 0 0.1 0 0 0</pose>
+        <material>
+          <ambient>0 1 0 1</ambient> <!-- Green -->
+          <diffuse>0 1 0 1</diffuse>
+        </material>
+      </visual>
+      <!-- -X leg -->
+      <collision name="leg_negx_collision">
+        <geometry>
+          <box><size>1 1 0.01</size></box>
+        </geometry>
+        <pose>-2.78 0 0.1 0 0 0</pose>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+              <mu2>0.1</mu2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0.5</restitution_coefficient>
+            <threshold>1.0</threshold>
+          </bounce>
+          <contact>
+            <ode>
+              <soft_cfm>0.0</soft_cfm>
+              <soft_erp>0.2</soft_erp>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+
+      <!-- +Y leg -->
+      <collision name="leg_posy_collision">
+        <geometry>
+          <box><size>1 1 0.01</size></box>
+        </geometry>
+        <pose>0 2.78 0.1 0 0 0</pose>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+              <mu2>0.1</mu2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0.5</restitution_coefficient>
+            <threshold>1.0</threshold>
+          </bounce>
+          <contact>
+            <ode>
+              <soft_cfm>0.0</soft_cfm>
+              <soft_erp>0.2</soft_erp>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+
+      <!-- -Y leg -->
+      <collision name="leg_negy_collision">
+        <geometry>
+          <box><size>1 1 0.01</size></box>
+        </geometry>
+        <pose>0 -2.78 0.1 0 0 0</pose>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+              <mu2>0.1</mu2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0.5</restitution_coefficient>
+            <threshold>1.0</threshold>
+          </bounce>
+          <contact>
+            <ode>
+              <soft_cfm>0.0</soft_cfm>
+              <soft_erp>0.2</soft_erp>
+            </ode>
+          </contact>
         </surface>
       </collision>
       
+      <!-- Contact Sensor -->
+      <sensor name="contact_sensor_posx" type="contact">
+        <!-- <pose>2.78 0 0 0 0 0</pose> -->
+        <always_on>true</always_on>
+        <update_rate>30</update_rate>
+        <contact>
+          <collision>leg_posx_collision</collision> 
+        </contact>
+        <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
+      </sensor>
 
-    </link>
+      <sensor name="contact_sensor_negx" type="contact">
+        <!-- <pose>-2.78 0 0 0 0 0</pose> -->
+        <always_on>true</always_on>
+        <update_rate>30</update_rate>
+        <contact>
+          <collision>leg_negx_collision</collision>
+        </contact>
+      <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
+      </sensor>
+
+      <sensor name="contact_sensor_posy" type="contact">
+        <!-- <pose>0 2.78 0 0 0 0</pose> -->
+        <always_on>true</always_on>
+        <update_rate>30</update_rate>
+        <contact>
+          <collision>leg_posy_collision</collision>
+        </contact>
+        <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
+      </sensor>
+
+      <sensor name="contact_sensor_negy" type="contact">
+        <!-- <pose>0 -2.78 0 0 0 0</pose> -->
+        <always_on>true</always_on>
+        <update_rate>30</update_rate>
+        <contact>
+          <collision>leg_negy_collision</collision>
+        </contact>
+        <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
+      </sensor>
+      
+   </link>
+
     <joint name="thruster_0_joint" type="fixed">
             <pose relative_to="lander_link">0 0 0 0 0 0</pose>
             <parent>lander_link</parent>
@@ -235,6 +299,8 @@
                 </ode>
             </physics>
         </joint>
+
+
         <link name="thruster_0">
             <gravity>false</gravity>
             <pose relative_to="thruster_0_joint">0 0 0 0 0 0</pose>
@@ -255,7 +321,7 @@
             <link_name>thruster_0</link_name>
             <actuator_number>0</actuator_number>
             <duty_cycle_frequency>10</duty_cycle_frequency>
-            <max_thrust>200</max_thrust>
+            <max_thrust>120</max_thrust>
             <topic>cmd_thrust</topic>
         </plugin>
 

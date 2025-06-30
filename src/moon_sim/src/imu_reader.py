@@ -11,16 +11,26 @@ class ImuReader(Node):
         self.get_logger().info("✅ IMU Reader started.")
         self.create_subscription(Imu, '/imu', self.imu_callback, 10)
 
+        self.orientation_z = 0.0
+        self.orientation_y = 0.0
+        self.orientation_x = 0.0
     def imu_callback(self, msg):
-        self.get_logger().info(f"[IMU] orientation.z = {msg.orientation.z:.3f}, {msg.orientation.y:.3f}, {msg.orientation.x}")
+        self.orientation_z = msg.orientation.z
+        self.orientation_y = msg.orientation.y
+        self.orientation_x = msg.orientation.x
 
-def main(args=None):
-    rclpy.init(args=args)
-    rclpy.spin(ImuReader())
-    rclpy.shutdown()
+        #self.get_logger().info(f"[IMU] orientation.z = {msg.orientation.z:.3f}, {msg.orientation.y:.3f}, {msg.orientation.x}")
 
-if __name__ == '__main__':
-    main()
 # This script is a ROS 2 node that reads IMU data and logs the orientation.z value.
 # It subscribes to the '/imu' topic and prints the z component of the orientation quaternion
 # whenever a new message is received. The node is initialized and spun in the main function.    
+# def main():
+#     rclpy.init()
+#     imusensor = ImuReader()
+#     while True:
+#         rclpy.spin_once(imusensor)
+#         print(f"x: {imusensor.orientation_x} y: {imusensor.orientation_y} z:{imusensor.orientation_z}" )
+#     rclpy.shutdown()
+
+# if __name__ == '__main__':
+#     main()

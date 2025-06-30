@@ -15,7 +15,11 @@ install(DIRECTORY launch
 
 install(PROGRAMS
   src/imu_reader.py
+  src/alti_reader.py
+  src/contact_sensors.py
   DESTINATION lib/${PROJECT_NAME}
 )
+
+
 
 ament_package()
