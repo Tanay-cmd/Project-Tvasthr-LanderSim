@@ -3,7 +3,8 @@
     <world name="moon_flat_world">
 
         <physics name="bullet_physics" type="bullet">
-            <max_step_size>0.001</max_step_size>
+            <max_step_size>0.01</max_step_size>
+            <real_time_update_rate>100</real_time_update_rate>
             <real_time_factor>1.0</real_time_factor>
 
         </physics>
@@ -51,7 +52,7 @@
             <collision name="collision">
             <geometry>
                 <box>
-                <size>100 100 0.1</size>  <!-- Large flat box as ground -->
+                <size>1000 1000 0.1</size>  <!-- Large flat box as ground -->
                 </box>
             </geometry>
             <surface>

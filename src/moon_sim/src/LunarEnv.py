@@ -24,7 +24,7 @@ from gz.msgs10.boolean_pb2 import Boolean
 from gz.msgs10.world_reset_pb2 import WorldReset
 from gz.msgs10.actuators_pb2 import Actuators
 from gz.msgs10.contact_pb2 import Contact
-
+from gz.msgs10.pose_pb2 import Pose
 class LunarEnv(gym.Env):
     def __init__(self):
         super().__init__()
@@ -82,14 +82,25 @@ class LunarEnv(gym.Env):
             print("Gazebo Paused:", response.data) 
 
     def reset(self):
-        reset_msg = WorldReset()
-        reset_msg.all = True  
-        self.request.reset.CopyFrom(reset_msg)
-        timeout = 5000   
-        success, response = self.gui_controller.request(
-            self.control_service, self.request, WorldControl, Boolean, timeout
-        )
+        # reset_msg = WorldReset()
+        # reset_msg.all = True  
+        # self.request.reset.CopyFrom(reset_msg)
+        # timeout = 5000   
+        # success, response = self.gui_controller.request(
+        #     self.control_service, self.request, WorldControl, Boolean, timeout
+        # )
 
+        node = GNode()
+        service_name = "/world/moon_flat_world/set_pose"
+        timeout = 5000  
+        request = Pose()
+        request.name = "apollo_lander"
+        request.position.x = np.random.randint(-90, 90)
+        request.position.y = np.random.randint(-90, 90)
+        request.position.z = np.random.randint(90, 150)
+        request.orientation.w = 1.0  
+        result, response = node.request(service_name, request, Pose, Boolean, timeout)
+        print("Reset-Complete")
     def apply_thrust(self):
         msg = Actuators()
         msg.normalized.append(1.0)  
@@ -111,20 +122,23 @@ class LunarEnv(gym.Env):
         self.observation_space.contains(observation)
         return observation
 
+    def step(self):
+        observation = self.get_observation()
+        
+        if observation[2] > 0:
+            print("Resetting . . .")
+            time.sleep(4)
+            
+            env.reset()
+
+
 env = LunarEnv()
-
-
-
 
 while True:
     print("Printing.....")
     print(env.get_observation())
+    print(env.step())
     time.sleep(0.1)
     
 
-print("Applying thrust...")
 
-
-time.sleep(40)
-print("Resetting the environment...")
-env.reset()

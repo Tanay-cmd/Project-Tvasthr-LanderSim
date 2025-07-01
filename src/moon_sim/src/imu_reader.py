@@ -24,13 +24,13 @@ class ImuReader(Node):
 # This script is a ROS 2 node that reads IMU data and logs the orientation.z value.
 # It subscribes to the '/imu' topic and prints the z component of the orientation quaternion
 # whenever a new message is received. The node is initialized and spun in the main function.    
-# def main():
-#     rclpy.init()
-#     imusensor = ImuReader()
-#     while True:
-#         rclpy.spin_once(imusensor)
-#         print(f"x: {imusensor.orientation_x} y: {imusensor.orientation_y} z:{imusensor.orientation_z}" )
-#     rclpy.shutdown()
+def main():
+    rclpy.init()
+    imusensor = ImuReader()
+    while True:
+        rclpy.spin_once(imusensor)
+        print(f"x: {imusensor.orientation_x} y: {imusensor.orientation_y} z:{imusensor.orientation_z}" )
+    rclpy.shutdown()
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()

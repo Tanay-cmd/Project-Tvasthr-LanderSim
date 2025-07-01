@@ -20,14 +20,14 @@ class AltimeterReader(Node):
         self.vertical_reference = msg.vertical_reference
     
 
-# def main():
-#     rclpy.init()
-#     altimeter = AltimeterReader()
-#     while True:
-#         rclpy.spin_once(altimeter)
-#         print(f"x: {altimeter.orientation_x} y: {altimeter.orientation_y} z:{altimeter.orientation_z}" )
-#     rclpy.shutdown()
+def main():
+    rclpy.init()
+    altimeter = AltimeterReader()
+    while True:
+        rclpy.spin_once(altimeter)
+        print(f"x: {altimeter.vertical_position} y: {altimeter.vertical_velocity}" )
+    rclpy.shutdown()
 
-# if __name__ == '__main__':
-#     main()     
+if __name__ == "__main__":
+    main()     
 
