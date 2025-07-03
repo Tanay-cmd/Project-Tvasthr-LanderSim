@@ -8,7 +8,7 @@ class AltimeterReader(Node):
     def __init__(self):
         super().__init__('altimeter_reader')
         self.get_logger().info("📡 Altimeter Reader started.")
-        self.create_subscription(Altimeter, '/altimeter', self.altimeter_callback, 10)
+        self.create_subscription(Altimeter, '/altimeter', self.altimeter_callback, 1)
 
         self.vertical_position = 0.000000
         self.vertical_velocity = 0.000000

@@ -2,12 +2,13 @@
 <sdf version="1.10">
     <world name="moon_flat_world">
 
-        <physics name="bullet_physics" type="bullet">
-            <max_step_size>0.01</max_step_size>
-            <real_time_update_rate>100</real_time_update_rate>
-            <real_time_factor>1.0</real_time_factor>
-
+        <physics name="bullet_physics" type="dart">
+        <max_step_size>0.01</max_step_size>
+        <real_time_factor>1.0</real_time_factor>
         </physics>
+
+
+
         <plugin 
             filename="gz-sim-physics-system"
             name="gz::sim::systems::Physics">
@@ -22,6 +23,14 @@
             name="gz::sim::systems::SceneBroadcaster">
         </plugin>
         <plugin name="gz::sim::systems::Sensors" filename="gz-sim-sensors-system"/>
+        <plugin
+            filename="gz-sim-contact-system"
+            name="gz::sim::systems::Contact">
+        </plugin>
+        <plugin
+            filename="gz-sim-imu-system"
+            name="gz::sim::systems::Imu">
+        </plugin>
   <!-- plugin-specific params go here if needed -->
 
         
@@ -43,16 +52,20 @@
 
         <include>
           <uri>model://lander</uri>
-          <pose>0 0 90 0 0 0</pose> <!-- Drop from 50m for IMU motion -->
+          <pose>0 0 90 0 0 0</pose> Drop from 50m for IMU motion
         </include>
         
-        <model name="ground_plane">
+        <!-- <include>
+            <uri>model://moon_terrain</uri>
+        </include> -->
+        
+            <model name="ground_plane">
             <static>true</static>
             <link name="link">
             <collision name="collision">
             <geometry>
                 <box>
-                <size>1000 1000 0.1</size>  <!-- Large flat box as ground -->
+                <size>1000 1000 1</size> 
                 </box>
             </geometry>
             <surface>
@@ -84,6 +97,6 @@
                 </material>
                 </visual>
             </link>
-        </model>
+         </model>
     </world>
 </sdf>

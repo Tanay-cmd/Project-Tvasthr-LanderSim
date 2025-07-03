@@ -9,3 +9,4 @@ src/moon_sim/src/__pycache__/contact_sensors.cpython-312.pyc
 src/moon_sim/src/__pycache__/imu_reader.cpython-312.pyc
 src/moon_sim/src/step.py
 src/moon_sim/src/pose.py
+src/moon_sim/src/lol.py

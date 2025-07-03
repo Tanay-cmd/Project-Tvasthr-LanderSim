@@ -7,10 +7,10 @@ import time
 class ContactSensor:
     def __init__(self):
         # Contact sensor topics
-        self.topic_negx = "/world/moon_flat_world/model/apollo_lander/link/lander_link/sensor/contact_sensor_negx/contact"
-        self.topic_posx = "/world/moon_flat_world/model/apollo_lander/link/lander_link/sensor/contact_sensor_posx/contact"
-        self.topic_negy = "/world/moon_flat_world/model/apollo_lander/link/lander_link/sensor/contact_sensor_negy/contact"
-        self.topic_posy = "/world/moon_flat_world/model/apollo_lander/link/lander_link/sensor/contact_sensor_posy/contact"
+        self.topic_negx = "/contact_1"
+        self.topic_posx = "/contact_2"
+        self.topic_negy = "/contact_3"
+        self.topic_posy = "/contact_4"
 
         # Contact flags
         self.negx = False
@@ -67,5 +67,5 @@ def main():
     except KeyboardInterrupt:
         print("👋 Shutting down contact sensor monitor.")
 
-if __name__ == "__main__":
+if __name__ == "__main__":    
     main()

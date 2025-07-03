@@ -25,9 +25,16 @@
         <update_rate>100.0</update_rate>
         <visualize>true</visualize>
         <topic>imu</topic>
-      
-        <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
+        <pose>0 0 0 0 0 0</pose>
+        
+        <imu>
+          <angular_velocity/>
+          <linear_acceleration/>
+        </imu>
+
+        <!-- <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/> -->
       </sensor>
+
 
 
       <!-- Camera Sensor -->
@@ -47,7 +54,7 @@
         </camera>
         <topic>camera</topic>
         <always_on>true</always_on>
-        <update_rate>30</update_rate>
+        <update_rate>-1</update_rate>
         <visualize>true</visualize>
       </sensor>
       
@@ -99,7 +106,7 @@
 
     <sensor name="altimeter_sensor" type="altimeter">
       <always_on>true</always_on>
-      <update_rate>100.0</update_rate>
+      <update_rate>50.0</update_rate>
       <topic>altimeter</topic>
       <plugin name="gz::sim::systems::Altimeter" filename="gz-sim-altimeter-system"/>
     </sensor>
@@ -215,8 +222,8 @@
         <surface>
           <friction>
             <ode>
-              <mu>0.1</mu>
-              <mu2>0.1</mu2>
+              <mu>0.5</mu>
+              <mu2>0.5</mu2>
             </ode>
           </friction>
           <bounce>
@@ -236,41 +243,49 @@
       <sensor name="contact_sensor_posx" type="contact">
         <!-- <pose>2.78 0 0 0 0 0</pose> -->
         <always_on>true</always_on>
-        <update_rate>100</update_rate>
+        <update_rate>-1</update_rate>
         <contact>
-          <collision>leg_posx_collision</collision> 
+          <collision>leg_posx_collision</collision>
+          <topic>/contact_1</topic> 
         </contact>
-        <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
-      </sensor>
+        
+        <!-- <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/> -->
+      </sensor> 
 
       <sensor name="contact_sensor_negx" type="contact">
         <!-- <pose>-2.78 0 0 0 0 0</pose> -->
         <always_on>true</always_on>
-        <update_rate>100</update_rate>
+        <update_rate>-1</update_rate>
         <contact>
           <collision>leg_negx_collision</collision>
+          <topic>/contact_2</topic>
         </contact>
-      <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
+        
+      <!-- <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/> -->
       </sensor>
 
       <sensor name="contact_sensor_posy" type="contact">
         <!-- <pose>0 2.78 0 0 0 0</pose> -->
         <always_on>true</always_on>
-        <update_rate>100</update_rate>
+        <update_rate>-1</update_rate>
         <contact>
           <collision>leg_posy_collision</collision>
+          <topic>/contact_3</topic>
         </contact>
-        <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
+        
+        <!-- <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/> -->
       </sensor>
 
       <sensor name="contact_sensor_negy" type="contact">
         <!-- <pose>0 -2.78 0 0 0 0</pose> -->
         <always_on>true</always_on>
-        <update_rate>100</update_rate>
+        <update_rate>-1</update_rate>
         <contact>
           <collision>leg_negy_collision</collision>
+          <topic>/contact_4</topic>
         </contact>
-        <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
+        
+        <!-- <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/> -->
       </sensor>
       
    </link>

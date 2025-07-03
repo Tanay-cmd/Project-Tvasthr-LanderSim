@@ -12,6 +12,7 @@ from rclpy.executors import MultiThreadedExecutor
 from alti_reader import AltimeterReader
 from imu_reader import ImuReader
 from contact_sensors import ContactSensor
+from WorldManager import WorldManager
 
 import numpy as np
 import time
@@ -21,9 +22,7 @@ import subprocess, os
 from gz.transport13 import Node as GNode
 from gz.msgs10.world_control_pb2 import WorldControl
 from gz.msgs10.boolean_pb2 import Boolean
-from gz.msgs10.world_reset_pb2 import WorldReset
 from gz.msgs10.actuators_pb2 import Actuators
-from gz.msgs10.contact_pb2 import Contact
 from gz.msgs10.pose_pb2 import Pose
 class LunarEnv(gym.Env):
     def __init__(self):
@@ -49,8 +48,18 @@ class LunarEnv(gym.Env):
         self.altimeter_reader = AltimeterReader()
         self.imu_reader = ImuReader()
         self.control_sensor = ContactSensor()
+        self.world_manager = WorldManager()
         
         self.step_node = GNode()
+
+        self.executor = rclpy.executors.MultiThreadedExecutor()
+        self.executor.add_node(self.altimeter_reader)
+        self.executor.add_node(self.imu_reader)
+        # self.executor.add_node(self.control_sensor)
+
+        self.spin_thread = threading.Thread(target=self.executor.spin, daemon=True)
+        self.spin_thread.start()
+        print("[INFO] ROS 2 nodes spinning in background")
 
 
         self.create_env()
@@ -59,11 +68,12 @@ class LunarEnv(gym.Env):
         process = subprocess.Popen(["ros2", "launch", "moon_sim", "moon_world.launch.py"], text=True)
         #process = subprocess.Popen(["gz", "sim", "/home/tanay/lander_simulator/src/moon_sim/worlds/moon_flat_world.sdf"], text=True)
         time.sleep(10)
+        self.world_manager.spawn_model()
         print("Environment Created")
-        self.unpause()
+        # self.unpause()
 
     def unpause(self):
-        timeout = 5000  #
+        timeout = 5000  
         self.request.pause = False
         success, response = self.gui_controller.request(
             self.control_service, self.request, WorldControl, Boolean, timeout
@@ -91,18 +101,10 @@ class LunarEnv(gym.Env):
         #     self.control_service, self.request, WorldControl, Boolean, timeout
         # )
 
-        node = GNode()
-        service_name = "/world/moon_flat_world/set_pose"
-        timeout = 5000  
-        request = Pose()
-        request.name = "apollo_lander"
-        request.position.x = np.random.randint(-10, 10)
-        request.position.y = np.random.randint(-10, 10)
-        request.position.z = np.random.randint(90, 150)
-        request.orientation.w = 1.0  
-        result, response = node.request(service_name, request, Pose, Boolean, timeout)
-        print("Reset-Complete")
-
+        self.world_manager.destroy_model()
+        time.sleep(2)
+        self.world_manager.spawn_model()
+        time.sleep(1)
 
     def apply_thrust(self):
         msg = Actuators()
@@ -112,10 +114,11 @@ class LunarEnv(gym.Env):
         print("Published:", msg)
 
     def get_observation(self):
-        
-        rclpy.spin_once(self.imu_reader)
-        rclpy.spin_once(self.altimeter_reader)
-        height = self.altimeter_reader.vertical_position
+        # print("getting imu")
+        # rclpy.spin_once(self.imu_reader, timeout_sec=0.1)
+        # print("altimeter reading")
+        # rclpy.spin_once(self.altimeter_reader, timeout_sec=0.1)
+        height = self.altimeter_reader.vertical_position + 50
         velocity = self.altimeter_reader.vertical_velocity
         orientation_z = self.imu_reader.orientation_z
         orientation_y = self.imu_reader.orientation_y
@@ -127,37 +130,52 @@ class LunarEnv(gym.Env):
 
     def step(self):
         observation = self.get_observation()
-    
-        if observation[2] > 0:
+
+        if observation[0] < 2:
             print("Resetting . . .")
-            time.sleep(1)
             self.pause()
-            time.sleep(1)
+            time.sleep(0.1)
             self.reset()
-            time.sleep(0.001)
-            self.unpause()
-        # ctrl_msg = WorldControl()
-        # ctrl_msg.pause = True    
-        # ctrl_msg.step = True      
 
-        # ok, response = self.step_node.request(
-        #     self.control_service,
-        #     ctrl_msg,
-        #     WorldControl,
-        #     Boolean,
-        #     1000) 
+          
+            for _ in range(5): 
+                ctrl_msg = WorldControl()
+                ctrl_msg.step = True
+                self.step_node.request(self.control_service, ctrl_msg, WorldControl, Boolean, 1000)
+                time.sleep(0.05)  
+          
+            observation = self.get_observation()
 
-        # print("stepping forward")
+            if observation[0] < 2:
+                print("still in contact")
+                return
+
+        ctrl_msg = WorldControl()
+        ctrl_msg.step = True
+        # ctrl_msg.pause = True
+        self.step_node.request(
+            self.control_service,
+            ctrl_msg,
+            WorldControl,
+            Boolean,
+            1000
+        )
+
+
 
 
 
 env = LunarEnv()
 
-while True:
-    print(env.step())
-    print(env.get_observation())
-    #print(env.step())
-    time.sleep(0.001)
-    
+try:
+    while True:
+        print("Printing ...")
+        env.step()
+        print(env.get_observation())
+        time.sleep(0.01)
 
-
+except KeyboardInterrupt:
+    print("\n[INFO] KeyboardInterrupt received. Shutting down cleanly...")
+    env.executor.shutdown()
+    rclpy.shutdown()
+    print("[INFO] Shutdown complete.")

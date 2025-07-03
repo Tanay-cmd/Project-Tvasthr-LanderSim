@@ -9,7 +9,7 @@ class ImuReader(Node):
     def __init__(self):
         super().__init__('imu_reader')
         self.get_logger().info("✅ IMU Reader started.")
-        self.create_subscription(Imu, '/imu', self.imu_callback, 10)
+        self.create_subscription(Imu, '/imu', self.imu_callback, 1)
 
         self.orientation_z = 0.0
         self.orientation_y = 0.0
